@@ -1,0 +1,265 @@
+@font-face {
+  font-family: "InterRegular";
+  src: url("../src/fonts/Inter-VariableFont_slnt.ttf") format("truetype");
+  font-style: normal;
+  font-weight: normal;
+}
+
+@font-face {
+  font-family: "PacificRegular";
+  src: url("../src/fonts/Pacifico-Regular.ttf") format("truetype");
+  font-style: normal;
+  font-weight: normal;
+}
+
+html, body {
+  min-width: 100%;
+  min-height: 100%;
+  display: inline-block;
+  background: inherit;
+  font-family: "InterRegular";
+}
+
+.bg-image {
+  background: linear-gradient(to top, #f3e7e9 0%, #e3eeff 40%, #537895 46%, #09203f 100%);
+}
+
+.bg-custom-color {
+  background-color: #143155;
+}
+
+.custom-lang-icon {
+  margin-right: 5px;
+}
+
+.bg-container-information {
+  width: 100%;
+  height: auto;
+  background: #143155;
+}
+
+.text-title {
+  font-size: 4rem;
+  font-weight: bold;
+}
+
+.text-desc-container {
+  width: 70%;
+  align-items: center;
+}
+
+.text-desc {
+  color: gainsboro;
+  font-size: 1.3rem;
+  word-wrap: break-word;
+}
+
+.information {
+  padding-top: 40px;
+  padding-bottom: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.gradient {
+  display: block;
+  width: 100%;
+  height: clamp(100px, 25vw, 200px);
+  position: relative;
+  background: linear-gradient(to bottom, #143155 0%, #7b9dbb 30%, #c5d9ed 60%, #f8f2ed 100%);
+}
+
+.pacific-font {
+  font-family: "PacificRegular";
+}
+
+.btn-get-start {
+  margin: 20px;
+  text-decoration: none;
+  color: white;
+  display: inline-block;
+  vertical-align: top;
+  font-size: 1.2em;
+  padding: 0.5em;
+  padding-left: 1.2em;
+  padding-right: 1.2em;
+  background-color: #d46b3b;
+  border-radius: 0.6em;
+  border: solid #d46b3b;
+}
+
+.btn-get-start:hover {
+  background-color: #dd8b64;
+  border: solid #dd8b64;
+}
+
+.bg-container-about {
+  width: 100%;
+  height: 100%;
+  background: #f8f2ed;
+  padding-top: 40px;
+  padding-bottom: 40px;
+}
+
+.about {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.links {
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  border-radius: 0.6em;
+  border: 3px solid gainsboro;
+  width: auto;
+  height: auto;
+  padding: 20px;
+}
+
+.link-info {
+  background-color: white;
+  border: solid white;
+  margin: 5px;
+  text-decoration: none;
+  display: inline-block;
+  vertical-align: top;
+  font-size: 1.2em;
+  width: auto;
+  height: auto;
+}
+
+.link-info:hover {
+  background-color: rgb(243, 250, 255);
+  border: solid rgb(243, 250, 255);
+}
+
+.read-more {
+  background-color: white;
+  text-align: start;
+  border-radius: 0.6em;
+  border: 3px solid gainsboro;
+  width: 40%;
+  height: auto;
+  padding: 20px;
+}
+
+.title-about {
+  font-weight: bold;
+}
+
+.arrow {
+  display: flex;
+  align-items: center;
+}
+
+.bg-container-work {
+  height: 100%;
+  display: flex;
+  flex-wrap: nowrap;
+  width: 100%;
+  overflow-x: auto;
+  padding-left: 96px;
+  box-sizing: border-box;
+  min-width: 100vw;
+}
+
+#background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, #aea4e3, #d3ffe8);
+  z-index: -1;
+}
+
+.control-panel {
+  position: absolute;
+  height: 100%;
+  width: 96px;
+}
+.h-8 {
+  height: 2rem;
+}
+.gap-3 {
+  gap: 1rem;
+}
+.btn-panel-custom {
+  background-color: inherit;
+  border: none;
+}
+
+.btn-comp-task {
+  background-color: inherit;
+  border: none;
+}
+
+.btn-card-custom {
+  background-color: inherit;
+  border: none;
+}
+
+.down-button {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.card-title-custom {
+  display: flex !important;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 3px;
+}
+.card-custom {
+  width: 280px;
+  min-width: 280px;
+  margin: 20px;
+  border-radius: 0.8em;
+}
+
+.card-text {
+  width: 100%;
+  height: auto;
+  font-weight: bold;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  background-color: rgb(236, 236, 236);
+  border-radius: 0.6em;
+  padding: 3px;
+}
+
+.task-text {
+  margin: 5px;
+}
+
+.task-text-div {
+  width: auto;
+  flex-grow: 1;
+  white-space: inherit;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.btn-card-custom {
+  flex-shrink: 0;
+}
+
+.checkbox-task {
+  transform:scale(1.6);
+  opacity:0.9;
+  cursor:pointer;
+  margin: 3px;
+}
+
+.link-task {
+  text-decoration: none;
+  color: inherit;
+}
