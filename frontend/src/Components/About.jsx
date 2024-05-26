@@ -8,6 +8,9 @@ const About = () => {
   const { t } = useTranslation();
   return (
     <div className='bg-container-about'>
+      <div className='container demo-custom'>
+      <video src="demoWork.mp4" alt="Demonstraction work" id='demo-work' autoPlay loop />
+      </div>
     <div className="p-10 container about">
       <div className='read-more'>
         <h2 className='title-about'>
@@ -21,7 +24,7 @@ const About = () => {
         <Arrow />
       </div>
       <div className='links'>
-        <a href='https://github.com/Pyplee' target="_blank" rel="noreferrer" className='text-black link-info'>{t('about.linkProfile')}</a>
+        <a href='https://github.com/Pyplee' target="_blank" rel="noopener noreferrer" className='text-black link-info'>{t('about.linkProfile')}</a>
         <a href='#' className='text-black link-info'>{t('about.linkFrontend')}</a>
         <a href='#' className='text-black link-info'>{t('about.linkBackend')}</a>
         <a href='#' className='text-black link-info'>{t('about.linkDocker')}</a>

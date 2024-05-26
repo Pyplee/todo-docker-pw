@@ -1,11 +1,11 @@
 class Task {
-  constructor(title, description, cardId, complite = false) {
+  constructor(title, description, cardId, isComplited = false) {
     this.id = Task.id;
     Task.id += 1;
     this.title = title;
     this.description = description;
     this.cardId = cardId;
-    this.complite = complite;
+    this.isComplited = isComplited;
   }
 
   getId() {
@@ -14,6 +14,14 @@ class Task {
 
   getCardId() {
     return this.cardId;
+  }
+
+  changeComplit() {
+    this.isComplited =!this.isComplited;
+  }
+
+  getIsComplited() {
+    return this.isComplited;
   }
 }
 

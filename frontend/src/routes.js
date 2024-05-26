@@ -11,6 +11,8 @@ const routes = {
   taskPath: (id) => `${baseURL}/api/tasks/${id}`,
   cardsPath: () => `${baseURL}/api/cards`,
   cardPath: (id) => `${baseURL}/api/cards/${id}`,
+  tasksDelCompPath: () => `${baseURL}/api/tasks/complited`,
+  settingsSetPath: () => `${baseURL}/api/settings`,
 };
 
 export { api, routes };

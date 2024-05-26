@@ -6,7 +6,6 @@ const Work = () => {
   return(
   <>
     <ContenWork />
-    <div id="background"></div>
   </>
   );
 }

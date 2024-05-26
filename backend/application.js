@@ -33,22 +33,44 @@ export default () => {
     new Task('Clean the house', 'Vacuum and wash the clothes', 1),
     new Task('Relax', 'Relax and watch a movie', 1),
     new Task('Report', 'Report to the accounting department', 2),
-    new Task('Relax on work', 'Do nothing 2 hours', 2),
-    new Task('Programming', 'Write the backend of this application XD', 2),
+    new Task('Relax on work', 'Do nothing 2 hours', 2, true),
+    new Task('Programming', 'Write the backend of this application XD', 2, true),
   ];
+
+  let settings = { lng: null, bgThemeEl: null };
 
   cards[0].addMoretasksId([1, 2, 3]);
   cards[1].addMoretasksId([4, 5, 6]);
-  console.log(cards[0].getId());
+
+  app.get('/api/settings', (req, res) => {
+    res.json({ settings });
+  });
+
+  app.patch('/api/settings', (req, res) => {
+    const { lng, bgThemeEl } = req.body;
+    if (lng === null || lng === undefined) {
+      settings = { ...settings, bgThemeEl };
+      res.sendStatus(204).end();
+    }
+    if (bgThemeEl === null || bgThemeEl === undefined) {
+      settings = {...settings, lng };
+      res.sendStatus(204).end();
+    }
+    if (lng === null || lng === undefined && bgThemeEl === null || bgThemeEl === undefined) {
+      res.status(400).json({ error: 'Data not correct' });
+    }
+    settings = { lng, bgThemeEl };
+    res.sendStatus(204).end();
+  });
 
   app.get('/api/tasks', (req, res) => {
-    res.json({ data: tasks });
+    res.json({ items: tasks });
   });
 
   app.post('/api/tasks', (req, res) => {
     const { title, description, cardId } = req.body;
     const newTask = new Task(title, description, cardId);
-    const currentCard = cards.find((c) => c.getId().toString() === cardId);
+    const currentCard = cards.find((c) => c.getId().toString() === String(cardId));
 
     if (currentCard) {
       currentCard.addTask(newTask.id);
@@ -57,6 +79,17 @@ export default () => {
     } else {
       res.status(400).json({ error: 'Can`t found card' });
     }
+  });
+
+  app.delete('/api/tasks/complited', (req, res) => {
+    const complitedTasks = tasks.filter((t) => t.getIsComplited());
+    const ids = complitedTasks.map((t) => {
+      const id = t.getId();
+      return String(id);
+    });
+    const newTasks = tasks.filter((t) => !ids.includes(t.id.toString()));
+    tasks = newTasks;
+    res.sendStatus(204).end();
   });
 
   app.delete('/api/tasks/:id', (req, res) => {
@@ -69,15 +102,27 @@ export default () => {
     res.sendStatus(204).end();
   });
 
+  app.patch('/api/tasks/:id', (req, res) => {
+    const { id } = req.params;
+    const currTask = tasks.find((t) => t.id.toString() === String(id));
+  
+    if (currTask) {
+      currTask.changeComplit();
+      res.sendStatus(204).end();
+    } else {
+      res.status(404).json({ error: 'Task not found' });
+    }
+  });
+
   app.get('/api/cards', (req, res) => {
-    res.json({ data: cards });
+    res.json({ items: cards });
   });
 
   app.post('/api/cards', (req, res) => {
     const { title } = req.body;
     const newCard = new Card(title);
     cards.push(newCard);
-    res.sendStatus(204).end();
+    res.status(201).json({ id: newCard.getId() });
   });
 
   app.delete('/api/cards/:id', (req, res) => {

@@ -1,8 +1,7 @@
 /* eslint-disable no-param-reassign */
-// import axios from 'axios';
-
 import { createSlice, createEntityAdapter, createAsyncThunk } from '@reduxjs/toolkit';
 import { api, routes } from '../routes';
+import { actions as cardsActions } from './cardsSlice.js';
 
 export const fetchTasks = createAsyncThunk(
   'tasks/fetchTasks',
@@ -14,25 +13,36 @@ export const fetchTasks = createAsyncThunk(
 
 export const fetchCompleteTask = createAsyncThunk(
   'tasks/fetchCompleteTask',
-  async (id) => {
-    const response = await api.patch(routes.taskPath(id), { isCompleted: true });
-    return response.data;
+  async (task) => {
+    const { id } = task;
+    await api.patch(routes.taskPath(id));
+    const updatedTask = { ...task, isComplited: !task.isComplited };
+    return updatedTask;
   },
 );
 
 export const fetchAddTask = createAsyncThunk(
   'tasks/fetchAddTask',
-  async (name) => {
-    const response = await api.post(routes.tasksPath(), { name });
-    return response.data;
+  async ({ title, description, cardId }) => {
+    const response = await api.post(routes.tasksPath(), { title, description, cardId });
+    const newTask = { title, description, cardId, id: response.data.id };
+    return newTask;
   },
 );
 
 export const fetchRemoveTask = createAsyncThunk(
   'tasks/fetchRemoveTask',
   async (id) => {
-    const response = await api.delete(routes.taskPath(id));
-    return response.data;
+    await api.delete(routes.taskPath(id));
+    return id;
+  },
+);
+
+export const fetchRemoveCompTasks = createAsyncThunk(
+  'tasks/fetchRemoveCompTasks',
+  async (ids) => {
+    await api.delete(routes.tasksDelCompPath());
+    return ids;
   },
 );
 
@@ -46,15 +56,16 @@ const tasksSlice = createSlice({
     addTasks: tasksAdapter.addMany,
     addTask: tasksAdapter.addOne,
     removeTask: tasksAdapter.removeOne,
-    completeTask: (state, action) => {
-      const index = state.ids.indexOf(action.payload.id);
-      if (index !== -1) {
-        state.entities[action.payload.id].isCompleted = true;
-      }
-    },
+    removeTasks: tasksAdapter.removeMany,
+    updateTask: tasksAdapter.updateOne,
   },
   extraReducers: (builder) => {
     builder
+      .addCase(cardsActions.removeCard, (state, { payload }) => {
+        const cardId = payload;
+        const restEntities = Object.values(state.entities).filter((e) => e.cardId !== cardId);
+        tasksAdapter.setAll(state, restEntities);
+      })
       .addCase(fetchTasks.pending, (state) => {
         state.loadingStatus = 'loading';
         state.error = null;
@@ -73,7 +84,14 @@ const tasksSlice = createSlice({
         state.error = null;
       })
       .addCase(fetchCompleteTask.fulfilled, (state, action) => {
-        tasksSlice.caseReducers.completeTask(state, { payload: action });
+        const task = action.payload;
+        const { id, isComplited } = task;
+        tasksAdapter.updateOne(state, {
+          id,
+          changes: {
+            isComplited,
+          }
+        });
         state.loadingStatus = 'idle';
         state.error = null;
       })
@@ -104,6 +122,19 @@ const tasksSlice = createSlice({
         state.error = null;
       })
       .addCase(fetchRemoveTask.rejected, (state, action) => {
+        state.loadingStatus = 'failed';
+        state.error = action.error;
+      })
+      .addCase(fetchRemoveCompTasks.pending, (state) => {
+        state.loadingStatus = 'loading';
+        state.error = null;
+      })
+      .addCase(fetchRemoveCompTasks.fulfilled, (state, action) => {
+        tasksAdapter.removeMany(state, action);
+        state.loadingStatus = 'idle';
+        state.error = null;
+      })
+      .addCase(fetchRemoveCompTasks.rejected, (state, action) => {
         state.loadingStatus = 'failed';
         state.error = action.error;
       });
